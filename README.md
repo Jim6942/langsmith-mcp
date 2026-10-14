@@ -72,7 +72,8 @@ Ask in your own words. For example:
 - "What went wrong yesterday afternoon?"
 
 The first time, Claude asks to use the LangSmith read tools and the helper: choose "Yes, and
-don't ask again". A weekly report takes about twenty minutes, most of it counting in the
+don't ask again". A weekly report posts a first look (failures, topics, mood) within a few
+minutes, then the full report with usage in about twenty, most of it counting in the
 background. Follow-up questions in the same session reuse what was already read.
 
 You can add your own skills in `~/.claude/skills/` alongside these. They share the `langsmith`

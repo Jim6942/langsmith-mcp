@@ -17,32 +17,54 @@ throughout. "Organisation" below means the profile's word for one (for example "
   querying. Compare per working day, because the two periods can differ in length.
 - Convert every day boundary to UTC before querying.
 
-Tell the reader in one line that the report takes about twenty minutes, then start.
+Tell the reader in one line that a first look comes in a few minutes and the full report in
+about twenty, then start.
 
-## The data pass (once; every section uses it)
+## Order of work (one data pass; every section uses it)
 
-Start steps 1 and 2 together, then run 3 to 5 while they work.
+The reader sees every line you write. Write only the opening line, the first look (step 7),
+one line per helper that returns early (step 8), and the full report (step 9). No step names,
+no "now reading", no "still waiting".
 
-1. **Counts for the period.** Start the `trace-counter` helper with job `full`, the period in
-   UTC and its day boundaries. It returns messages per day by source, every active
-   organisation with its message and people counts, and its own checks.
-2. **Counts for the comparison.** Start a second `trace-counter` with job `totals` for the
-   comparison period.
-3. **Failures and slow answers.** Count, don't read: `has_error: true`, `selects: ["NAME",
+1. **Start the counts for the period.** Start the `trace-counter` helper in the background with
+   job `full`, the period in UTC and its day boundaries. It returns messages per day by source,
+   every active organisation with its message and people counts, and its own checks.
+2. **Start the counts for the comparison.** Start a second `trace-counter` in the background
+   with job `totals` for the comparison period. Don't wait for either helper.
+3. **Count failures and slow answers.** Count, don't read: `has_error: true`, `selects: ["NAME",
    "START_TIME", "LATENCY_SECONDS"]`, the profile's answer filter. Count all failed answers,
    then each kind with the profile's failure table ("other" is the remainder), then each kind
    by source. Keep the times of stops by users for the mood section. Count slow answers with
    the profile's slow filter.
-4. **Messages to read.** For each day in the period, main-source messages in two one-hour
+4. **Read the sample.** For each day in the period, main-source messages in two one-hour
    windows, 10:00-11:00 and 14:00-15:00 local time, `selects: ["ID", "START_TIME",
    "INPUTS_PREVIEW"]`, first page only, `page_size: 50`. This is the sample for topics and
    mood; note how many messages it holds and its share of the period's total.
-5. **Who the signals came from.** For the messages you tag as corrections, frustration or
+5. **Tag topics and mood** as "Reading the messages" says.
+6. **Who the signals came from.** For the messages you tagged as corrections, frustration or
    re-sends (at most 25), fetch `["METADATA"]` by `ids` with `page_size: 25` and note each
    one's organisation.
+7. **End your turn with the first look.** Don't wait for the helpers: post this and stop. Each
+   helper wakes you when it finishes. Use only what you already have; rates and usage come
+   with the full report.
 
-Read nothing else. If the reader later asks for more detail, query only what that question
-needs.
+   ```
+   **First look, <period as "7-13 Oct">** (usage by <organisation> in about <n> minutes)
+
+   - **Failures:** <n> answers failed; <the biggest cause in a few words> (<n>).
+   - **Asked most:** <area> (<x%>: <two or three specific points>); <area> (...); <area> (...).
+   - **Mood:** <one-line verdict>. <n> corrections or challenges, <n> frustrated, <n> positive, <n> repeated requests.
+
+   From a sample of <n> messages.
+   ```
+8. **When one helper wakes you and the other is still running**, reply with one line holding
+   its main number (for the comparison: "Before: <n> messages a working day, <comparison
+   dates>.") and end your turn again.
+9. **When both helpers are back, post the full report** (below). It stands on its own: repeat
+   the first look's points rather than referring back.
+
+If the reader asks something meanwhile, answer from what you already have. Read nothing beyond
+these steps; for a later question, query only what it needs.
 
 ## Reading the messages
 
