@@ -10,6 +10,8 @@ steps in order and do all the work yourself. The person may not be technical.
 - Run every command yourself. Never ask them to type in Terminal.
 - Ask them only for what only they can do: clicking Allow on a command, giving you the profile
   file, starting a new session, and signing in to LangSmith.
+- If they decline an Allow, say in one sentence what that step does and ask them to allow it.
+  Never hand them commands to run instead.
 - If a step fails, try the fix given here once. If that fails too, say plainly what's wrong and
   what they should send to whoever gave them this link. Don't improvise around a failed step.
 - Never print or repeat a token, key or password.
