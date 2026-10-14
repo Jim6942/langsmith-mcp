@@ -23,7 +23,7 @@ profile file into the message, and say:
 > Install this for me: https://github.com/Jim6942/langsmith-mcp
 
 Claude follows [INSTALL.md](INSTALL.md) and does the setup. You click Allow a few times, start a
-new session and sign in to LangSmith once.
+new session and sign in to LangSmith once in your browser.
 
 If you're Claude: fetch the guide with
 `curl -fsSL https://raw.githubusercontent.com/Jim6942/langsmith-mcp/main/INSTALL.md`
@@ -56,8 +56,13 @@ You need Claude Code, a LangSmith account that can read your production project,
 3. Add your profile: copy [`profile/profile-template.md`](profile/profile-template.md) to
    `~/.claude/langsmith-mcp/profile.md` and fill it in (see [Profile](#profile)).
 
-4. Sign in: start a new Claude Code session, type `/mcp`, choose `langsmith`, then
-   Authenticate, and sign in in the browser window that opens.
+4. Sign in, in a terminal (the desktop app's `/mcp` doesn't finish this sign-in):
+
+   ```bash
+   claude mcp login langsmith
+   ```
+
+   Then start a new Claude Code session.
 
 Add the server with the command in step 1, not as a claude.ai connector: a connector's tools
 have different names, so the guards wouldn't apply to them.
@@ -118,7 +123,7 @@ enabled, so turn the plugin off where you need LangSmith's full toolset.
 | What you see | Why | Fix |
 |---|---|---|
 | "Setup isn't finished: the profile file is missing" | No profile at `~/.claude/langsmith-mcp/profile.md` | Add it (install step 3) |
-| Claude can't reach LangSmith, or `/mcp` shows `langsmith` needing sign-in | Sign-in missing or expired | `/mcp`, choose `langsmith`, sign in again |
+| Claude can't reach LangSmith, or `claude mcp list` shows `langsmith` needing sign-in | Sign-in missing or expired | Ask Claude to sign you in to LangSmith, or run `claude mcp login langsmith` in a terminal |
 | Project not found, or no projects | Signed in to another workspace | Sign in again and pick the right workspace |
 | "Blocked by the langsmith-mcp plugin" | A tool outside the three reads was tried | Expected; Claude falls back to small reads |
 | "Result withheld: could not check it for credentials" | `jq` missing, or an unreadable result | Install `jq`, or ask a narrower question |
@@ -135,7 +140,7 @@ plugin/
   skills/trace-debugging/   SKILL.md, reading-traces.md (same file)
   agents/trace-counter.md
   hooks/hooks.json
-  scripts/allow-reads.sh, redact.sh
+  scripts/allow-reads.sh, redact.sh, signin-hint.sh
 profile/profile-template.md
 INSTALL.md                  step-by-step setup, written for Claude
 ```

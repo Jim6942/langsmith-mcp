@@ -1,11 +1,14 @@
 {
-  "description": "Keeps the LangSmith connection read-only and strips credentials and email addresses from trace data before Claude sees it.",
+  "description": "Keeps the LangSmith connection read-only, strips credentials and email addresses from trace data before Claude sees it, and tells each session how to sign in to LangSmith.",
   "hooks": {
     "PreToolUse": [
       {
         "matcher": "^mcp__langsmith__.*",
         "hooks": [
-          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/allow-reads.sh" }
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/allow-reads.sh"
+          }
         ]
       }
     ],
@@ -13,7 +16,20 @@
       {
         "matcher": "^mcp__langsmith__.*",
         "hooks": [
-          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/redact.sh" }
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/redact.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/signin-hint.sh"
+          }
         ]
       }
     ]

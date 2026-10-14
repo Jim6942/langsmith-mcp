@@ -9,7 +9,7 @@ steps in order and do all the work yourself. The person may not be technical.
   version."). No technical detail unless they ask.
 - Run every command yourself. Never ask them to type in Terminal.
 - Ask them only for what only they can do: clicking Allow on a command, giving you the profile
-  file, starting a new session, and signing in to LangSmith.
+  file, signing in to LangSmith in the browser, and starting a new session.
 - If they decline an Allow, say in one sentence what that step does and ask them to allow it.
   Never hand them commands to run instead.
 - If a step fails, try the fix given here once. If that fails too, say plainly what's wrong and
@@ -17,7 +17,7 @@ steps in order and do all the work yourself. The person may not be technical.
 - Never print or repeat a token, key or password.
 
 Start by telling them: "I'll set this up for you. It takes about five minutes. I'll need you to
-click Allow a few times, send me one file, and sign in to LangSmith once."
+click Allow a few times, send me one file, and sign in to LangSmith once in your browser."
 
 ## Step 1: Claude Code command
 
@@ -92,19 +92,34 @@ If it says it's already installed, run
 
 Check with `claude plugin list`: `langsmith-mcp` should be listed and enabled.
 
-## Step 6: hand over the last two clicks
+## Step 6: sign in to LangSmith
 
-Say this, filling in the workspace from the profile:
+Say: "A LangSmith sign-in page will open in your browser. Sign in, and pick the **<workspace>**
+workspace if it asks." (the workspace from the profile). Then run, with a five-minute timeout:
 
-"Nearly done. Two things only you can do:
+```bash
+script -q /dev/null "<claude>" mcp login langsmith
+```
 
-1. Start a new session: the new tools load when a session starts.
-2. In the new session, type `/mcp`, choose **langsmith**, then **Authenticate**. Sign in to
-   LangSmith in the browser window that opens, and pick the **<workspace>** workspace if it
-   asks.
+`<claude>` is the command from step 1. `script` gives the sign-in the terminal it needs; on
+Linux use `script -qec '"<claude>" mcp login langsmith' /dev/null`. Wait for
+`Authenticated with "langsmith"`, then check that `"<claude>" mcp list` shows `langsmith` as
+Connected. Don't send them to `/mcp`: in the desktop app it doesn't finish this sign-in.
 
-Then ask: **How are users getting on this week?** The first time, Claude asks permission to read
-LangSmith: choose **Yes, and don't ask again**."
+If it fails or times out, run it once more. If it fails again, give them this to paste into the
+Terminal app (Mac), and wait until they say it's done:
+
+```bash
+"$(ls -d "$HOME/Library/Application Support/Claude/claude-code/"*/*/claude.app/Contents/MacOS/claude | tail -1)" mcp login langsmith
+```
+
+## Step 7: hand over
+
+Say:
+
+"All set. Start a new session (the new tools load when a session starts), then ask: **How are
+users getting on this week?** The first time, Claude asks permission to read LangSmith: choose
+**Yes, and don't ask again**."
 
 ## If something goes wrong later
 

@@ -15,14 +15,16 @@ guess a project name or a filter.
 
 ## Then: the connection
 
-- If the LangSmith tools (`query_runs`) aren't available in this session, say: "LangSmith
-  isn't connected in this session. Type `/mcp`, choose **langsmith**, then **Authenticate**,
-  and sign in. If langsmith isn't listed, ask me to install the plugin again from its link."
-  Then stop.
+- If the LangSmith tools (`query_runs`) aren't available in this session, LangSmith isn't
+  signed in. Say: "LangSmith isn't signed in. A sign-in page will open in your browser: sign
+  in, then start a new session and ask again." Then run, with a five-minute timeout,
+  `script -q /dev/null "${CLAUDE_CODE_EXECPATH:-claude}" mcp login langsmith` and stop. If
+  `langsmith` isn't set up at all, say: "Ask me to install this again from its link." Then stop.
 - Make your first call `list_projects` with the profile's project name. If it isn't found,
-  say: "You're signed in to a different LangSmith workspace. Type `/mcp`, choose
-  **langsmith**, clear its sign-in, then sign in again and pick the <profile's workspace>
-  workspace." Then stop.
+  say: "You're signed in to a different LangSmith workspace. A sign-in page will open: pick the
+  <profile's workspace> workspace, then start a new session and ask again." Then run
+  `"${CLAUDE_CODE_EXECPATH:-claude}" mcp logout langsmith` and the sign-in command above, and
+  stop.
 
 ## The reader
 
