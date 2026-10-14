@@ -1,0 +1,21 @@
+{
+  "description": "Keeps the LangSmith connection read-only and strips credentials and email addresses from trace data before Claude sees it.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^mcp__langsmith__.*",
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/allow-reads.sh" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^mcp__langsmith__.*",
+        "hooks": [
+          { "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/scripts/redact.sh" }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "langsmith-mcp",
+  "version": "1.0.0",
+  "description": "Analyse and debug production LangSmith traces from Claude Code, through LangSmith's MCP server. Read-only.",
+  "author": {
+    "name": "Jim6942"
+  },
+  "license": "MIT",
+  "keywords": ["langsmith", "mcp", "traces", "observability", "debugging"]
+}

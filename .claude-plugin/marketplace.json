@@ -1,0 +1,16 @@
+{
+  "name": "langsmith-mcp",
+  "owner": {
+    "name": "Jim6942"
+  },
+  "metadata": {
+    "description": "LangSmith's MCP server for Claude Code, with skills to analyse and debug traces."
+  },
+  "plugins": [
+    {
+      "name": "langsmith-mcp",
+      "source": "./plugin",
+      "description": "Analyse and debug production LangSmith traces from Claude Code. Read-only."
+    }
+  ]
+}
